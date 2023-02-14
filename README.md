@@ -1,16 +1,17 @@
-# interview_app
+# Food Cart
 
-A new Flutter project.
+A sample flutter project for demonstration of Google auth, Phone auth in Firebase. Only android project is created.
 
-## Getting Started
+Firebase information is found in personal firebase account
+https://console.firebase.google.com/u/0/project/anoop-interview-api/overview
 
-This project is a starting point for a Flutter application.
+Cheers :thumbsup:
 
-A few resources to get you started if this is your first Flutter project:
+Ref Doc:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. https://docs.google.com/document/d/1uWYu_knwR0QZ7TQ2X-ofdks5gPOBVtcjfrCQ9A7lHTc/edit
+2. https://www.mocky.io/v2/5dfccffc310000efc8d2c1ad
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Icons:
+
+1. <a target="_blank" href="https://icons8.com/icon/62452/firebase">Firebase</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
