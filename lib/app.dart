@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
-import 'package:interview_app/module/home/dummy.dart';
 import 'package:interview_app/repository/authentication_repository.dart';
 
+import 'module/home/view/home_page.dart';
 import 'module/login/view/login_page.dart';
 import 'module/splash/splash_page.dart';
 
@@ -46,7 +46,7 @@ class _AppViewState extends State<AppView> {
                 switch (state.status) {
                   case AuthenticationStatus.authenticated:
                     _navigator.pushAndRemoveUntil<void>(
-                      DummyPage.route(),
+                      HomePage.route(),
                       (route) => false,
                     );
                     break;
