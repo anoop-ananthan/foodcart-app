@@ -16,7 +16,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   AuthenticationBloc({required AuthenticationRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
         super(const AuthenticationState.unknown()) {
-    on<AuthenticationUserChanged>(_onAuthenticationUserChanged);
     on<AuthenticationGoogleLoginRequested>(_onAuthenticationGoogleLoginRequested);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
     on<_AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
@@ -32,18 +31,11 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     return super.close();
   }
 
-  void _onAuthenticationUserChanged(
-    AuthenticationUserChanged event,
-    Emitter<AuthenticationState> emit,
-  ) async {
-    // TODO: implement event handler
-  }
-
   void _onAuthenticationLogoutRequested(
     AuthenticationLogoutRequested event,
     Emitter<AuthenticationState> emit,
   ) async {
-    // TODO: implement event handler
+    emit(const AuthenticationState.unauthenticated());
   }
 
   void _onAuthenticationStatusChanged(
