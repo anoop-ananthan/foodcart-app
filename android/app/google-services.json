@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "465730788914",
+    "project_id": "anoop-interview-api",
+    "storage_bucket": "anoop-interview-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465730788914:android:38d7a7af704f613c72662b",
+        "android_client_info": {
+          "package_name": "com.anoop.interview_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465730788914-rkhujmph70dt5i7vc22ej65c11419qp5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFg_TB8w7jmx-bc-qpHRwuRIsrsE0LzCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465730788914-a46gr4bvvna1gt8ns3dof04tctht19ig.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

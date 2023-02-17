@@ -1,88 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
+import 'package:interview_app/repository/authentication_repository.dart';
+import 'login_view.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => const LoginPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/images/firebase.svg',
-              height: 125,
-              width: 125,
+        child: RepositoryProvider.value(
+          value: AuthenticationRepository(),
+          child: BlocProvider(
+            create: (context) => AuthenticationBloc(
+              authenticationRepository: RepositoryProvider.of<AuthenticationRepository>(context),
             ),
-            const SizedBox(height: 120),
-            const _GoogleButton(),
-            const SizedBox(height: 25),
-            const _PhoneButton(),
-          ],
+            child: const LoginView(),
+          ),
         ),
-      ),
-    );
-  }
-}
-
-class _GoogleButton extends StatelessWidget {
-  const _GoogleButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(MediaQuery.of(context).size.width - 60, 60),
-        shape: const StadiumBorder(),
-      ),
-      onPressed: () {},
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 14,
-            child: SvgPicture.asset(
-              'assets/images/google_logo.svg',
-              height: 16,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              "Google",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PhoneButton extends StatelessWidget {
-  const _PhoneButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(MediaQuery.of(context).size.width - 60, 60),
-        backgroundColor: Colors.green.shade400,
-        shape: const StadiumBorder(),
-      ),
-      onPressed: () {},
-      child: Row(
-        children: [
-          const Icon(Icons.phone),
-          Expanded(
-            child: Text(
-              "Phone",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-            ),
-          ),
-        ],
       ),
     );
   }
