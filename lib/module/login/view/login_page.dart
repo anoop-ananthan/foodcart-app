@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
-import 'package:interview_app/repository/authentication_repository.dart';
 import 'login_view.dart';
 
 class LoginPage extends StatelessWidget {
@@ -13,17 +10,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: RepositoryProvider.value(
-          value: AuthenticationRepository(),
-          child: BlocProvider(
-            create: (context) => AuthenticationBloc(
-              authenticationRepository: RepositoryProvider.of<AuthenticationRepository>(context),
-            ),
-            child: const LoginView(),
-          ),
-        ),
+        child: LoginView(),
       ),
     );
   }

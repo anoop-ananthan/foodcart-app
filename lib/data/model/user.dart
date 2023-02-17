@@ -77,8 +77,6 @@ class User {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
     return other is User && other.id == id && other.email == email && other.username == username && other.photoUrl == photoUrl;
   }
 

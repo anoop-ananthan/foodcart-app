@@ -6,7 +6,9 @@ abstract class AuthenticationEvent {
 
 class _AuthenticationStatusChanged extends AuthenticationEvent {
   final AuthenticationStatus status;
-  const _AuthenticationStatusChanged(this.status);
+  _AuthenticationStatusChanged(this.status) {
+    debugPrint('\n> status changed: $status');
+  }
 }
 
 class AuthenticationUserChanged extends AuthenticationEvent {

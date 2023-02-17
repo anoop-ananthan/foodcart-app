@@ -14,11 +14,17 @@ enum AuthenticationStatus {
 class AuthenticationRepository {
   final _controller = StreamController<AuthenticationStatus>();
   final _firebaseAuth = firebase_auth.FirebaseAuth.instance;
+  User? user;
+
+  Stream<AuthenticationStatus> get status async* {
+    await Future<void>.delayed(const Duration(seconds: 1));
+    yield AuthenticationStatus.unauthenticated;
+    yield* _controller.stream;
+  }
 
   AuthenticationRepository();
 
   Future<User?> googleSignIn() async {
-    User? user;
     final googleSignIn = GoogleSignIn();
     try {
       final googleAccount = await googleSignIn.signIn();
@@ -47,4 +53,6 @@ class AuthenticationRepository {
     }
     return user;
   }
+
+  void dispose() => _controller.close();
 }

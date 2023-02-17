@@ -11,7 +11,7 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthenticationRepository _authenticationRepository;
-  late final StreamSubscription<AuthenticationStatus> _streamSubscription;
+  late final StreamSubscription<AuthenticationStatus> _authenticationStatusSubscription;
 
   AuthenticationBloc({required AuthenticationRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
@@ -20,6 +20,16 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     on<AuthenticationGoogleLoginRequested>(_onAuthenticationGoogleLoginRequested);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
     on<_AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
+
+    _authenticationStatusSubscription = _authenticationRepository.status.listen(
+      (status) => add(_AuthenticationStatusChanged(status)),
+    );
+  }
+
+  @override
+  Future<void> close() {
+    _authenticationStatusSubscription.cancel();
+    return super.close();
   }
 
   void _onAuthenticationUserChanged(
@@ -40,7 +50,14 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     _AuthenticationStatusChanged event,
     Emitter<AuthenticationState> emit,
   ) async {
-    // TODO: implement event handler
+    switch (event.status) {
+      case AuthenticationStatus.unauthenticated:
+        return emit(const AuthenticationState.unauthenticated());
+      case AuthenticationStatus.authenticated:
+        break;
+      case AuthenticationStatus.unknown:
+        return emit(const AuthenticationState.unknown());
+    }
   }
 
   void _onAuthenticationGoogleLoginRequested(
@@ -51,6 +68,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       final user = await _authenticationRepository.googleSignIn();
       if (user != null) {
         emit(AuthenticationState.authenticated(user));
+      } else {
+        emit(const AuthenticationState.unauthenticated());
       }
       debugPrint(user.toString());
     } catch (e) {

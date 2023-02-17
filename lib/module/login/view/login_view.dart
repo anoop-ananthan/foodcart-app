@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
-import 'package:interview_app/repository/authentication_repository.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({
@@ -11,27 +10,19 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
-      listenWhen: (previous, current) => current.status == AuthenticationStatus.unauthenticated,
-      listener: (context, state) {
-        ScaffoldMessenger.of(context)
-          ..clearSnackBars()
-          ..showSnackBar(const SnackBar(content: Text('Login faied')));
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            'assets/images/firebase.svg',
-            height: 125,
-            width: 125,
-          ),
-          const SizedBox(height: 120),
-          const _GoogleButton(),
-          const SizedBox(height: 25),
-          const _PhoneButton(),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          'assets/images/firebase.svg',
+          height: 125,
+          width: 125,
+        ),
+        const SizedBox(height: 120),
+        const _GoogleButton(),
+        const SizedBox(height: 25),
+        const _PhoneButton(),
+      ],
     );
   }
 }
@@ -47,7 +38,6 @@ class _GoogleButton extends StatelessWidget {
         shape: const StadiumBorder(),
       ),
       onPressed: () {
-        // AuthenticationRepository().googleSignIn();
         context.read<AuthenticationBloc>().add(AuthenticationGoogleLoginRequested());
       },
       child: Row(
