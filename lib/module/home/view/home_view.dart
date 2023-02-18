@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:interview_app/data/model/table_menu.dart';
 import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
+import 'package:interview_app/module/home/view/widgets/dish_card.dart';
 
 import '../cubit/restaurant_cubit.dart';
 
@@ -28,7 +30,7 @@ class HomeView extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ...state.tableMenuList.map((e) => DishesFromMenuCateory(menuCategory: e.menuCategory))
+            ...state.tableMenuList.map((e) => DishesFromMenuCateory(menuCategory: e))
           ],
         ),
         drawer: const _NavigationDrawer(),
@@ -40,15 +42,14 @@ class HomeView extends StatelessWidget {
 class DishesFromMenuCateory extends StatelessWidget {
   const DishesFromMenuCateory({super.key, required this.menuCategory});
 
-  final String menuCategory;
+  final TableMenu menuCategory;
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<RestaurantCubit>().state.restaurants[0];
-    final dishes = state.tableMenuList.firstWhere((e) => e.menuCategory == menuCategory).categoryDishes;
-    return Column(
+    final dishes = menuCategory.categoryDishes;
+    return ListView(
       children: [
-        ...dishes.map((e) => Text(e.dishName))
+        ...dishes.map((e) => DishCard(dish: e))
       ],
     );
   }
