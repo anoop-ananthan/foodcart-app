@@ -47,10 +47,19 @@ class DishesFromMenuCateory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dishes = menuCategory.categoryDishes;
-    return ListView(
-      children: [
-        ...dishes.map((e) => DishCard(dish: e))
-      ],
+    return ListView.separated(
+      itemCount: dishes.length + 1,
+      itemBuilder: (context, i) {
+        if (i >= dishes.length) {
+          return const SizedBox();
+        } else {
+          return DishCard(dish: dishes[i]);
+        }
+      },
+      separatorBuilder: (context, i) => const Divider(
+        thickness: 1.5,
+        height: 10,
+      ),
     );
   }
 }
