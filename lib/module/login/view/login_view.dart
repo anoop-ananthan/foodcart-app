@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:interview_app/module/home/view/home_page.dart';
 
 import '../cubit/login_cubit.dart';
 
@@ -19,28 +18,26 @@ class LoginView extends StatelessWidget {
             ..clearSnackBars()
             ..showSnackBar(const SnackBar(content: Text('Login failed')));
         }
-        if (state is LoginSuccess) {
-          Navigator.pushAndRemoveUntil(context, HomePage.route(), (route) => false);
-        }
       },
       builder: (context, state) {
-        if (state is LoginInProgress) {
+        if (state is LoginInitial || state is LoginFailed) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/images/firebase.svg',
+                height: 125,
+                width: 125,
+              ),
+              const SizedBox(height: 120),
+              const _GoogleButton(),
+              const SizedBox(height: 25),
+              const _PhoneButton(),
+            ],
+          );
+        } else {
           return const CircularProgressIndicator.adaptive();
         }
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/images/firebase.svg',
-              height: 125,
-              width: 125,
-            ),
-            const SizedBox(height: 120),
-            const _GoogleButton(),
-            const SizedBox(height: 25),
-            const _PhoneButton(),
-          ],
-        );
       },
     );
   }
