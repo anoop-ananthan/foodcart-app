@@ -4,6 +4,7 @@ import 'package:interview_app/module/auth/authentication/bloc/authentication_blo
 import 'package:interview_app/repository/authentication_repository.dart';
 import 'package:interview_app/repository/restaurant_repository.dart';
 
+import 'module/cart/cubit/cart_cubit.dart';
 import 'module/home/view/home_page.dart';
 import 'module/login/view/login_page.dart';
 import 'module/splash/splash_page.dart';
@@ -39,8 +40,15 @@ class _AppViewState extends State<AppView> {
           value: RestaurantRepository(),
         ),
       ],
-      child: BlocProvider.value(
-        value: _authenticationBloc,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: _authenticationBloc,
+          ),
+          BlocProvider(
+            create: (context) => CartCubit(),
+          ),
+        ],
         child: MaterialApp(
           navigatorKey: _navigatorKey,
           builder: (context, child) {
