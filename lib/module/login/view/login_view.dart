@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
+
+import '../cubit/login_cubit.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({
@@ -10,19 +11,34 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          'assets/images/firebase.svg',
-          height: 125,
-          width: 125,
-        ),
-        const SizedBox(height: 120),
-        const _GoogleButton(),
-        const SizedBox(height: 25),
-        const _PhoneButton(),
-      ],
+    return BlocConsumer<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state is LoginFailed) {
+          ScaffoldMessenger.of(context)
+            ..clearSnackBars()
+            ..showSnackBar(const SnackBar(content: Text('Login failed')));
+        }
+      },
+      builder: (context, state) {
+        if (state is LoginInitial || state is LoginFailed) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/images/firebase.svg',
+                height: 125,
+                width: 125,
+              ),
+              const SizedBox(height: 120),
+              const _GoogleButton(),
+              const SizedBox(height: 25),
+              const _PhoneButton(),
+            ],
+          );
+        } else {
+          return const CircularProgressIndicator.adaptive();
+        }
+      },
     );
   }
 }
@@ -38,7 +54,7 @@ class _GoogleButton extends StatelessWidget {
         shape: const StadiumBorder(),
       ),
       onPressed: () {
-        context.read<AuthenticationBloc>().add(AuthenticationGoogleLoginRequested());
+        context.read<LoginCubit>().onGoogleLoginRequested();
       },
       child: Row(
         children: [

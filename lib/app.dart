@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
 import 'package:interview_app/repository/authentication_repository.dart';
+import 'package:interview_app/repository/restaurant_repository.dart';
 
 import 'module/home/view/home_page.dart';
 import 'module/login/view/login_page.dart';
@@ -29,19 +30,21 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _authenticationRepository,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(
+          value: _authenticationRepository,
+        ),
+        RepositoryProvider.value(
+          value: RestaurantRepository(),
+        ),
+      ],
       child: BlocProvider.value(
         value: _authenticationBloc,
         child: MaterialApp(
           navigatorKey: _navigatorKey,
           builder: (context, child) {
             return BlocListener<AuthenticationBloc, AuthenticationState>(
-              listenWhen: (previous, current) {
-                debugPrint('\n[previous]\n${previous.toString()}');
-                debugPrint('\n[current]\n${current.toString()}');
-                return true;
-              },
               listener: (context, state) {
                 switch (state.status) {
                   case AuthenticationStatus.authenticated:
