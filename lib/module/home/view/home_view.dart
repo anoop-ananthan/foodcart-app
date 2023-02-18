@@ -18,6 +18,12 @@ class HomeView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
+          elevation: 1,
+          iconTheme: IconThemeData(color: Colors.grey.shade600),
+          actions: const [
+            Icon(Icons.shopping_cart),
+            SizedBox(width: 14),
+          ],
           bottom: TabBar(
             indicatorColor: Colors.red,
             isScrollable: true,
