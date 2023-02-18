@@ -46,6 +46,7 @@ class AuthenticationRepository {
         );
         debugPrint('[credential]');
         debugPrint(credential.toString());
+        _controller.add(AuthenticationStatus.authenticated);
       }
     } catch (e) {
       debugPrint('[googleSignIn]');

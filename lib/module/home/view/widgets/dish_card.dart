@@ -124,17 +124,17 @@ class DishCard extends StatelessWidget {
                   : const SizedBox(),
             ],
           ),
-          Container(
-            color: Colors.red,
-            child: CachedNetworkImage(
-              height: imageWidth,
-              width: imageWidth,
-              imageUrl: dish.dishImage,
-              progressIndicatorBuilder: (context, url, downloadProgress) => Image.asset(
-                'assets/images/food.jpg',
-                fit: BoxFit.cover,
-              ),
-              errorWidget: (context, url, error) => Image.asset('assets/images/food.jpg'),
+          CachedNetworkImage(
+            height: imageWidth,
+            width: imageWidth,
+            imageUrl: dish.dishImage,
+            progressIndicatorBuilder: (context, url, downloadProgress) => Image.asset(
+              'assets/images/food.jpg',
+              fit: BoxFit.cover,
+            ),
+            errorWidget: (context, url, error) => Image.asset(
+              'assets/images/food.jpg',
+              fit: BoxFit.cover,
             ),
           ),
         ],
