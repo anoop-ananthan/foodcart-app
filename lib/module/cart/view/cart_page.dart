@@ -70,6 +70,7 @@ class _PlaceOrderButtonState extends State<_PlaceOrderButton> {
                       content: Text(
                         'Order successfully placed.',
                         style: Theme.of(context).textTheme.bodySmall,
+                        textAlign: TextAlign.center,
                       ),
                       actions: [
                         TextButton(

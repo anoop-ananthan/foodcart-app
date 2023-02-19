@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:interview_app/module/login/view/phone_page.dart';
 
 import '../cubit/login_cubit.dart';
 
@@ -90,7 +91,12 @@ class _PhoneButton extends StatelessWidget {
         backgroundColor: Colors.green.shade400,
         shape: const StadiumBorder(),
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PhoneNumberEntryPage()),
+        );
+      },
       child: Row(
         children: [
           const Icon(Icons.phone),

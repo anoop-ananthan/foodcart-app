@@ -62,7 +62,7 @@ class SelectedDishCard extends StatelessWidget {
                 flex: 2,
                 fit: FlexFit.tight,
                 child: FittedBox(
-                  fit: BoxFit.scaleDown,
+                  fit: BoxFit.fill,
                   child: Counter(dish: dish),
                 ),
               ),
