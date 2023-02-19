@@ -1,15 +1,12 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:interview_app/data/model/user.dart';
+import 'package:interview_app/module/login/view/otp_page.dart';
 
-enum AuthenticationStatus {
-  unknown,
-  authenticated,
-  unauthenticated
-}
+enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 class AuthenticationRepository {
   final _controller = StreamController<AuthenticationStatus>();
@@ -53,6 +50,59 @@ class AuthenticationRepository {
       debugPrint(e.toString());
     }
     return user;
+  }
+
+  Future<void> signInWithPhoneNumber(BuildContext context, String phoneNumber) async {
+    await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (firebase_auth.PhoneAuthCredential phoneAuthCredential) async {
+          final credential = await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+          if (credential.user != null) {
+            user = User(
+              id: credential.user?.uid ?? 'not set',
+              email: credential.user?.email,
+              username: credential.user?.displayName,
+              photoUrl: credential.user?.photoURL,
+            );
+            debugPrint('[credential]');
+            debugPrint(credential.toString());
+            _controller.add(AuthenticationStatus.authenticated);
+          }
+        },
+        verificationFailed: (error) {
+          throw Exception(error.message);
+        },
+        codeSent: (String verificatioId, int? forceResendingToken) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OtpPage(verificationId: verificatioId),
+            ),
+          );
+        },
+        codeAutoRetrievalTimeout: (verificationId) {});
+  }
+
+  Future<bool> verifyOtp(String otp, String verificaitonId) async {
+    final credential = await _firebaseAuth.signInWithCredential(
+      firebase_auth.PhoneAuthProvider.credential(
+        verificationId: verificaitonId,
+        smsCode: otp,
+      ),
+    );
+    if (credential.user != null) {
+      user = User(
+        id: credential.user?.uid ?? 'not set',
+        email: credential.user?.email,
+        username: credential.user?.displayName,
+        photoUrl: credential.user?.photoURL,
+      );
+      debugPrint('[credential]');
+      debugPrint(credential.toString());
+      _controller.add(AuthenticationStatus.authenticated);
+      return true;
+    }
+    return false;
   }
 
   void dispose() => _controller.close();
