@@ -44,7 +44,8 @@ class CategoryDish {
         dishAvailability: json["dish_Availability"],
         dishType: json["dish_Type"],
         nexturl: json["nexturl"],
-        addonCat: json["addonCat"] == null ? [] : List<AddonCat>.from(json["addonCat"]!.map((x) => AddonCat.fromJson(x))),
+        addonCat:
+            json["addonCat"] == null ? [] : List<AddonCat>.from(json["addonCat"]!.map((x) => AddonCat.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -60,4 +61,67 @@ class CategoryDish {
         "nexturl": nexturl,
         "addonCat": addonCat == null ? [] : List<dynamic>.from(addonCat!.map((x) => x.toJson())),
       };
+
+  CategoryDish copyWith({
+    String? dishId,
+    String? dishName,
+    double? dishPrice,
+    String? dishImage,
+    String? dishCurrency,
+    double? dishCalories,
+    String? dishDescription,
+    bool? dishAvailability,
+    int? dishType,
+    String? nexturl,
+    List<AddonCat>? addonCat,
+  }) {
+    return CategoryDish(
+      dishId: dishId ?? this.dishId,
+      dishName: dishName ?? this.dishName,
+      dishPrice: dishPrice ?? this.dishPrice,
+      dishImage: dishImage ?? this.dishImage,
+      dishCurrency: dishCurrency ?? this.dishCurrency,
+      dishCalories: dishCalories ?? this.dishCalories,
+      dishDescription: dishDescription ?? this.dishDescription,
+      dishAvailability: dishAvailability ?? this.dishAvailability,
+      dishType: dishType ?? this.dishType,
+      nexturl: nexturl ?? this.nexturl,
+      addonCat: addonCat ?? this.addonCat,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CategoryDish &&
+        other.dishId == dishId &&
+        other.dishName == dishName &&
+        other.dishPrice == dishPrice &&
+        other.dishImage == dishImage &&
+        other.dishCurrency == dishCurrency &&
+        other.dishCalories == dishCalories &&
+        other.dishDescription == dishDescription &&
+        other.dishAvailability == dishAvailability &&
+        other.dishType == dishType &&
+        other.nexturl == nexturl;
+  }
+
+  @override
+  int get hashCode {
+    return dishId.hashCode ^
+        dishName.hashCode ^
+        dishPrice.hashCode ^
+        dishImage.hashCode ^
+        dishCurrency.hashCode ^
+        dishCalories.hashCode ^
+        dishDescription.hashCode ^
+        dishAvailability.hashCode ^
+        dishType.hashCode ^
+        nexturl.hashCode ^
+        addonCat.hashCode;
+  }
+
+  @override
+  String toString() {
+    return dishName;
+  }
 }
