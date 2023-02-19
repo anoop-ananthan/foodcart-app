@@ -24,7 +24,8 @@ class CartCubit extends Cubit<Map<CategoryDish, int>> {
     }
   }
 
-  int get quantity {
-    return 7;
+  void clearCart() {
+    Map<CategoryDish, int> freshCart = {};
+    emit(freshCart);
   }
 }

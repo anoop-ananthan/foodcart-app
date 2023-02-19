@@ -50,6 +50,16 @@ class _AppViewState extends State<AppView> {
           ),
         ],
         child: MaterialApp(
+          theme: ThemeData(
+            appBarTheme: AppBarTheme(
+              backgroundColor: Colors.white,
+              elevation: 1,
+              iconTheme: IconThemeData(color: Colors.grey.shade600),
+              toolbarTextStyle: TextStyle(
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ),
           navigatorKey: _navigatorKey,
           builder: (context, child) {
             return BlocListener<AuthenticationBloc, AuthenticationState>(

@@ -1,10 +1,10 @@
-import 'package:badges/badges.dart' as b;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interview_app/data/model/category_dish.dart';
 import 'package:interview_app/data/model/table_menu.dart';
 import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
 import 'package:interview_app/module/cart/cubit/cart_cubit.dart';
+import 'package:interview_app/module/cart/view/cart_page.dart';
 import 'package:interview_app/module/home/view/widgets/dish_card.dart';
 
 import '../cubit/restaurant_cubit.dart';
@@ -20,21 +20,19 @@ class HomeView extends StatelessWidget {
       length: state.tableMenuList.length,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 1,
-          iconTheme: IconThemeData(color: Colors.grey.shade600),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CartPage()),
+                );
+              },
               icon: BlocBuilder<CartCubit, Map<CategoryDish, int>>(
                 builder: (context, state) {
-                  return b.Badge(
-                    badgeContent: Text(
-                      state.length.toString(),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    showBadge: state.isNotEmpty,
-                    badgeAnimation: const b.BadgeAnimation.fade(),
+                  return Badge(
+                    isLabelVisible: state.isNotEmpty,
+                    label: Text(state.length.toString()),
                     child: const Icon(Icons.shopping_cart),
                   );
                 },

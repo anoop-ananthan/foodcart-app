@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interview_app/core/formatters/ruppee.dart';
 import 'package:interview_app/data/model/category_dish.dart';
-import 'package:interview_app/module/cart/cubit/cart_cubit.dart';
+import 'package:interview_app/widgets/counter.dart';
+import 'package:interview_app/widgets/food_type_indicator.dart';
 
 class DishCard extends StatelessWidget {
   const DishCard({
@@ -78,62 +78,7 @@ class DishCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 17),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      context.read<CartCubit>().removeDishFromCart(dish);
-                    },
-                    child: Container(
-                      width: 40,
-                      height: 30,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                        ),
-                      ),
-                      child: const Icon(Icons.remove, color: Colors.white),
-                    ),
-                  ),
-                  BlocBuilder<CartCubit, Map<CategoryDish, int>>(
-                    buildWhen: (previous, current) => previous != current,
-                    builder: (context, state) {
-                      return Container(
-                        width: 40,
-                        height: 30,
-                        decoration: const BoxDecoration(
-                          color: Colors.green,
-                        ),
-                        child: Center(
-                          child: Text(
-                            (state[dish] ?? '0').toString(),
-                            style: const TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.read<CartCubit>().addDishToCart(dish);
-                    },
-                    child: Container(
-                      width: 40,
-                      height: 30,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
-                        ),
-                      ),
-                      child: const Icon(Icons.add, color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
+              Counter(dish: dish),
               const SizedBox(height: 12),
               dish.addonCat?.isNotEmpty ?? false
                   ? const Text(
@@ -161,32 +106,6 @@ class DishCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class VegOrNonIndicator extends StatelessWidget {
-  const VegOrNonIndicator({
-    super.key,
-    required this.isVeg,
-  });
-
-  final bool isVeg;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(5.0),
-      padding: const EdgeInsets.all(2.0),
-      width: 15,
-      height: 15,
-      decoration: BoxDecoration(
-        border: Border.all(color: isVeg ? Colors.green.shade800 : Colors.red.shade900),
-        borderRadius: const BorderRadius.all(Radius.circular(3)),
-      ),
-      child: CircleAvatar(
-        backgroundColor: isVeg ? Colors.green.shade800 : Colors.red.shade900,
       ),
     );
   }
