@@ -46,7 +46,7 @@ class _NavigationDrawer extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
         ),
-        onTap: () => context.read<AuthenticationBloc>().add(AuthenticationLogoutRequested()),
+        onTap: () => {context.read<AuthenticationBloc>().add(AuthenticationLogoutRequested())},
       ),
     ]);
   }

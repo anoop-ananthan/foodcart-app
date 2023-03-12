@@ -1,45 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:interview_app/module/login/view/phone_page.dart';
+import 'package:formz/formz.dart';
+import 'package:interview_app/module/login/phone/view/phone_page.dart';
 
-import '../cubit/login_cubit.dart';
+import '../cubit/google_login_cubit.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({
-    super.key,
-  });
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginCubit, LoginState>(
-      listener: (context, state) {
-        if (state is LoginFailed) {
-          ScaffoldMessenger.of(context)
-            ..clearSnackBars()
-            ..showSnackBar(const SnackBar(content: Text('Login failed')));
-        }
-      },
-      builder: (context, state) {
-        if (state is LoginInitial || state is LoginFailed) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                'assets/images/firebase.svg',
-                height: 125,
-                width: 125,
-              ),
-              const SizedBox(height: 120),
-              const _GoogleButton(),
-              const SizedBox(height: 25),
-              const _PhoneButton(),
-            ],
-          );
-        } else {
-          return const CircularProgressIndicator.adaptive();
-        }
-      },
+    return Scaffold(
+      body: BlocConsumer<GoogleLoginCubit, GoogleLoginState>(
+        listener: (context, state) {
+          if (state.status.isSubmissionFailure) {
+            ScaffoldMessenger.of(context)
+              ..clearSnackBars()
+              ..showSnackBar(const SnackBar(content: Text('Login failed')));
+          }
+        },
+        builder: (context, state) => Center(
+          child: state.status.isSubmissionInProgress || state.status.isSubmissionSuccess
+              ? const CircularProgressIndicator.adaptive()
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/firebase.svg',
+                      height: 125,
+                      width: 125,
+                    ),
+                    const SizedBox(height: 120),
+                    const _GoogleButton(),
+                    const SizedBox(height: 25),
+                    const _PhoneButton(),
+                  ],
+                ),
+        ),
+      ),
     );
   }
 }
@@ -55,7 +54,7 @@ class _GoogleButton extends StatelessWidget {
         shape: const StadiumBorder(),
       ),
       onPressed: () {
-        context.read<LoginCubit>().onGoogleLoginRequested();
+        context.read<GoogleLoginCubit>().onGoogleLoginRequested();
       },
       child: Row(
         children: [
@@ -94,7 +93,7 @@ class _PhoneButton extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const PhoneNumberEntryPage()),
+          MaterialPageRoute(builder: (context) => const PhonePage()),
         );
       },
       child: Row(
