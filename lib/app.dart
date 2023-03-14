@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interview_app/module/auth/authentication/bloc/authentication_bloc.dart';
-import 'package:interview_app/repository/authentication_repository.dart';
-import 'package:interview_app/repository/restaurant_repository.dart';
 
-import 'module/cart/cubit/cart_cubit.dart';
-import 'module/home/view/home_page.dart';
-import 'module/login/view/login_page.dart';
-import 'module/splash/splash_page.dart';
+import 'app/module/auth/auth.dart';
+import 'app/module/cart/cart.dart';
+import 'app/module/home/home.dart';
+import 'app/module/splash/splash_page.dart';
 
 class AppView extends StatefulWidget {
   const AppView({super.key});
@@ -72,17 +69,11 @@ class _AppViewState extends State<AppView> {
                     );
                     break;
                   case AuthenticationStatus.unknown:
-                    _navigator.pushAndRemoveUntil<void>(
-                      LoginPage.route(),
-                      (route) => false,
-                    );
-                    break;
                   case AuthenticationStatus.unauthenticated:
                     _navigator.pushAndRemoveUntil<void>(
                       LoginPage.route(),
                       (route) => false,
                     );
-                    break;
                 }
               },
               child: child,
