@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (_) => RestaurantCubit(
         RepositoryProvider.of<RestaurantRepository>(context),
-      )..onRestaurantsFetched(),
+      ),
       child: const HomeIntermediate(),
     );
   }

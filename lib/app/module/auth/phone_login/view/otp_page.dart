@@ -36,6 +36,7 @@ class OtpPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Pinput(
+                autofocus: true,
                 length: 6,
                 showCursor: true,
                 defaultPinTheme: PinTheme(
@@ -53,8 +54,12 @@ class OtpPage extends StatelessWidget {
                   ),
                 ),
                 onCompleted: (value) {
-                  RepositoryProvider.of<AuthenticationRepository>(context)
-                      .verifyOtp(value, verificationId);
+                  context.read<AuthenticationBloc>().add(
+                        AuthenticationOtpVerificationRequested(
+                          verificationId: verificationId,
+                          otp: value,
+                        ),
+                      );
                 },
               ),
             ),

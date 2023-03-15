@@ -12,13 +12,6 @@ enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 class AuthenticationRepository {
   final _controller = StreamController<AuthenticationStatus>();
   final _firebaseAuth = firebase_auth.FirebaseAuth.instance;
-  User? user;
-
-  Stream<AuthenticationStatus> get status async* {
-    await Future<void>.delayed(const Duration(seconds: 1));
-    yield AuthenticationStatus.unauthenticated;
-    yield* _controller.stream;
-  }
 
   AuthenticationRepository();
 
@@ -29,7 +22,7 @@ class AuthenticationRepository {
       if (googleAccount == null) {
         return null;
       } else {
-        user = User(
+        User user = User(
           id: googleAccount.id,
           email: googleAccount.email,
           username: googleAccount.displayName,
@@ -44,31 +37,20 @@ class AuthenticationRepository {
         );
         debugPrint('[credential]');
         debugPrint(credential.toString());
-        _controller.add(AuthenticationStatus.authenticated);
+        return user;
       }
     } catch (e) {
       debugPrint('[googleSignIn]');
       debugPrint(e.toString());
     }
-    return user;
+    return null;
   }
 
   Future<void> signInWithPhoneNumber(BuildContext context, String phoneNumber) async {
     await _firebaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (firebase_auth.PhoneAuthCredential phoneAuthCredential) async {
-          final credential = await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-          if (credential.user != null) {
-            user = User(
-              id: credential.user?.uid ?? 'not set',
-              email: credential.user?.email,
-              username: credential.user?.displayName,
-              photoUrl: credential.user?.photoURL,
-            );
-            debugPrint('[credential]');
-            debugPrint(credential.toString());
-            _controller.add(AuthenticationStatus.authenticated);
-          }
+          await _firebaseAuth.signInWithCredential(phoneAuthCredential);
         },
         verificationFailed: (error) {
           throw Exception(error.message);
@@ -84,7 +66,7 @@ class AuthenticationRepository {
         codeAutoRetrievalTimeout: (verificationId) {});
   }
 
-  Future<bool> verifyOtp(String otp, String verificationId) async {
+  Future<User?> verifyOtp(String otp, String verificationId) async {
     final credential = await _firebaseAuth.signInWithCredential(
       firebase_auth.PhoneAuthProvider.credential(
         verificationId: verificationId,
@@ -92,7 +74,7 @@ class AuthenticationRepository {
       ),
     );
     if (credential.user != null) {
-      user = User(
+      User user = User(
         id: credential.user?.uid ?? 'not set',
         email: credential.user?.email,
         username: credential.user?.displayName,
@@ -101,9 +83,9 @@ class AuthenticationRepository {
       debugPrint('[credential]');
       debugPrint(credential.toString());
       _controller.add(AuthenticationStatus.authenticated);
-      return true;
+      return user;
     }
-    return false;
+    return null;
   }
 
   void dispose() => _controller.close();

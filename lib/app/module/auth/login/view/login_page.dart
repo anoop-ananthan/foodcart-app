@@ -15,7 +15,10 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: BlocProvider(
-          create: (context) => LoginCubit(RepositoryProvider.of<AuthenticationRepository>(context)),
+          create: (context) => LoginCubit(
+            RepositoryProvider.of<AuthenticationRepository>(context),
+            context.read<AuthenticationBloc>(),
+          ),
           child: const LoginView(),
         ),
       ),

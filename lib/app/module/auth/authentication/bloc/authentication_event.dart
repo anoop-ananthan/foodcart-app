@@ -12,13 +12,8 @@ class _AuthenticationStatusChanged extends AuthenticationEvent {
 }
 
 class AuthenticationUserChanged extends AuthenticationEvent {
-  const AuthenticationUserChanged(this.user);
-
+  const AuthenticationUserChanged({required this.user});
   final User user;
-
-  List<Object> get props => [
-        user
-      ];
 }
 
 class AuthenticationLoginFailed extends AuthenticationEvent {}
@@ -26,3 +21,9 @@ class AuthenticationLoginFailed extends AuthenticationEvent {}
 class AuthenticationLogoutRequested extends AuthenticationEvent {}
 
 class AuthenticationGoogleLoginRequested extends AuthenticationEvent {}
+
+class AuthenticationOtpVerificationRequested extends AuthenticationEvent {
+  const AuthenticationOtpVerificationRequested({required this.verificationId, required this.otp});
+  final String verificationId;
+  final String otp;
+}

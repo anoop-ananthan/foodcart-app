@@ -26,6 +26,7 @@ class HomeIntermediate extends StatelessWidget {
               return const HomeView();
 
             default:
+              context.read<RestaurantCubit>().onRestaurantsFetched();
               return const SizedBox();
           }
         },

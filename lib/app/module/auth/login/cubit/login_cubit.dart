@@ -7,9 +7,13 @@ import 'package:interview_app/app/module/auth/auth.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit(this._authenticationRepository) : super(LoginInitial());
+  LoginCubit(
+    this._authenticationRepository,
+    this._authenticationBloc,
+  ) : super(LoginInitial());
 
   final AuthenticationRepository _authenticationRepository;
+  final AuthenticationBloc _authenticationBloc;
 
   Future<User?> onGoogleLoginRequested() async {
     emit(LoginInProgress());
@@ -17,6 +21,7 @@ class LoginCubit extends Cubit<LoginState> {
       final user = await _authenticationRepository.googleSignIn();
       if (user != null) {
         emit(LoginSuccess(user));
+        _authenticationBloc.add(AuthenticationUserChanged(user: user));
       } else {
         emit(LoginFailed());
       }

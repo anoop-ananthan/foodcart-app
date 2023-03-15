@@ -17,10 +17,7 @@ class RestaurantState extends Equatable {
   final RestaurantStatus status;
 
   @override
-  List<Object> get props => [
-        restaurants,
-        status
-      ];
+  List<Object> get props => [restaurants, status];
 
   RestaurantState copyWith({
     List<Restaurant>? restaurants,
@@ -31,4 +28,27 @@ class RestaurantState extends Equatable {
       status: status ?? this.status,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'restaurants': restaurants.map((x) => x.toJson()).toList(),
+      'status': status.name,
+    };
+  }
+
+  factory RestaurantState.fromMap(Map<String, dynamic> map) {
+    return RestaurantState(
+      restaurants: List<Restaurant>.from(
+        (map['restaurants']).map<Restaurant>(
+          (x) => Restaurant.fromJson(x as Map<String, dynamic>),
+        ),
+      ),
+      status: RestaurantStatus.values.byName(map['status']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory RestaurantState.fromJson(String source) =>
+      RestaurantState.fromMap(json.decode(source) as Map<String, dynamic>);
 }

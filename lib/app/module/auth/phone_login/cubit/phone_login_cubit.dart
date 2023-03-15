@@ -23,9 +23,15 @@ class PhoneLoginCubit extends Cubit<PhoneLoginState> {
       final phoneNumber = '+91${state.phoneNumber.value}';
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       await _authenticationRepository.signInWithPhoneNumber(context, phoneNumber);
-      emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
-      emit(state.copyWith(status: FormzSubmissionStatus.failure));
+      emit(state.copyWith(status: FormzSubmissionStatus.failure, exception: e as Exception));
     }
+  }
+
+  Future<void> mockCustomError() async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    await Future.delayed(const Duration(seconds: 2));
+    emit(state.copyWith(
+        status: FormzSubmissionStatus.failure, exception: Exception('Custom exception')));
   }
 }

@@ -1,12 +1,14 @@
-import 'package:bloc/bloc.dart';
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:interview_app/app/data/model/restaurant.dart';
 import 'package:interview_app/app/module/home/repository/restaurant_repository.dart';
 
 part 'restaurant_state.dart';
 
-class RestaurantCubit extends Cubit<RestaurantState> {
+class RestaurantCubit extends HydratedCubit<RestaurantState> {
   RestaurantCubit(RestaurantRepository restaurantRepository)
       : _restaurantRepository = restaurantRepository,
         super(const RestaurantState());
@@ -25,5 +27,18 @@ class RestaurantCubit extends Cubit<RestaurantState> {
       debugPrint('\n[onRestaurantsFetched]\n${e.toString()}\n');
       emit(state.copyWith(status: RestaurantStatus.error));
     }
+  }
+
+  @override
+  RestaurantState? fromJson(Map<String, dynamic> json) {
+    return RestaurantState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(RestaurantState state) {
+    if (state.status == RestaurantStatus.success) {
+      return state.toMap();
+    }
+    return null;
   }
 }
