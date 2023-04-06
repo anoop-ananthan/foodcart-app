@@ -12,13 +12,12 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authenticationRepo = RepositoryProvider.of<AuthenticationRepository>(context);
+    final authenticationBloc = context.read<AuthenticationBloc>();
     return Scaffold(
       body: Center(
         child: BlocProvider(
-          create: (context) => LoginCubit(
-            RepositoryProvider.of<AuthenticationRepository>(context),
-            context.read<AuthenticationBloc>(),
-          ),
+          create: (context) => LoginCubit(authenticationRepo, authenticationBloc),
           child: const LoginView(),
         ),
       ),
